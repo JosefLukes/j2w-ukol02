@@ -17,37 +17,26 @@ import java.util.stream.Collectors;
 @Controller
 public class CitatController {
 
+
+
+
+    public CitatController()  {
+    }
+
+
     @GetMapping("/")
     public ModelAndView vyberCitat () throws IOException {
-        Random rand = new Random();
-        String cesta = "./templates/citaty.txt";
-        List<String> citaty = readAllLines(cesta);
-
-
-        int cisloRadku = rand.nextInt(citaty.size());
-        String citatVybrany = citaty.get(cisloRadku);
-        System.out.println(citatVybrany);
+        Citat citatVybrany = new Citat();
+        System.out.println(citatVybrany.getAutorCitatu());
+        System.out.println(citatVybrany.getTextCitatu());
         ModelAndView result = new ModelAndView("citat");
         result.addObject("citace",citatVybrany);
+        //result.addObject("citaceAutor",citatVybrany);
         return result;
     }
 
 
-    private static List<String> readAllLines(String resource)throws IOException {
-        //Soubory z resources se získávají pomocí classloaderu. Nejprve musíme získat aktuální classloader.
-        ClassLoader classLoader=Thread.currentThread().getContextClassLoader();
 
-        //Pomocí metody getResourceAsStream() získáme z classloaderu InpuStream, který čte z příslušného souboru.
-        //Následně InputStream převedeme na BufferedRead, který čte text v kódování UTF-8
-        try(InputStream inputStream=classLoader.getResourceAsStream(resource);
-            BufferedReader reader=new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))){
-
-            //Metoda lines() vrací stream řádků ze souboru. Pomocí kolektoru převedeme Stream<String> na List<String>.
-            return reader
-                    .lines()
-                    .collect(Collectors.toList());
-        }
-    }
 
 
 }
